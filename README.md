@@ -84,7 +84,7 @@ Package `bitstream` only defines what a `Bit` is and has a complimentary `String
 
 ## Provided examples
 
-Please see `main/reader/reader.go` for a program that accepts anything on `stdin` and shows the bits on `stdout`. For every 0-bit it outputs a `0`, or for every 1-bit outputs a `1`. Example:
+Please see `main/reader/reader.go` for a program that accepts anything on `stdin` and shows the bits on `stdout`. For every 0-bit it outputs a `0`, or for every 1-bit outputs a `1`. Series of `0`s and `1`s are grouped into cluster of eight for better readability. into Example:
 
 ```shell
 echo -n 'Hello' | go run main/reader/reader.go
