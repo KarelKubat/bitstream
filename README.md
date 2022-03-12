@@ -4,7 +4,7 @@
 
 - A `bitstream/bitrd` bit reader is instantiated with an underlying `io.Reader` that is called to fetch bytes. The bit reader then yields the bits using its method `Read()`.
 
-- Similarly, a `bitstream/bitwr` bit writer is instantiated with an underlying `io.Writer`. The writer calletes bits that are sent to the bit writer using its method `Write()` into bytes, which then are sent to the underlying `io.Writer`.
+- Similarly, a `bitstream/bitwr` bit writer is instantiated with an underlying `io.Writer`. The writer collects bits that are sent to the bit writer using its method `Write()` into bytes, which then are sent to the underlying `io.Writer`.
 
 Basically, the bitstream reader takes a standard `io.Reader` but returns 8 bits for every byte that this reader would yield. The bitstream takes a standard `io.Writer`, accepts bits, and for every 8 bits it has received, it sends a byte to its `io.Writer`.
 
@@ -60,7 +60,9 @@ func main() {
 }
 ```
 
-## `bitstream` API
+## API details
+
+### `bitstream` API
 
 Package `bitstream` only defines what a `Bit` is and has a complimentary `String()` function to display the bit as `0` or `1`.
 
@@ -68,14 +70,30 @@ Package `bitstream` only defines what a `Bit` is and has a complimentary `String
 - Value `bitstream.Zero` represents a 0-bit.
 - Value `bitstream.One` represents a 1-bit.
 
-## `bitstream/bitrd` API
+### `bitstream/bitrd` API
 
 - `r := New(rdr io.Reader`) returns an initialized bit reader. There is no automatic closing of the underlying `io.Reader`, just `close(r.Reader)` once appropriate.
 
 - `r.Read()` returns a `bitstream.Bit` and an error. The error `io.EOF` indicates that there is no more to read, as with any standard reader. In this situation `r.Reader` may be closed.
 
-## `bitstream/bitwr`
+### `bitstream/bitwr`
 
 - `w := New(wtr io.Writer)` returns an initialized bit writer. There is no automatic closing of the underlying `io.Writer`, just `close w.Writer` once appropriate.
 - `w.Write(bit bitstream.Bit)` writes one bit, which is either `bitstream.Zero` or `bitstream.One`. This method returns an error when the underlying `io.Writer` fails.
 - `w.Flush()` flushes any incomplete byte to the underlying `io.Writer`. Calling `w.Flush()` is only required when the number of bits written by `w.Write()` isn't a multiple of eight.
+
+## Provided examples
+
+Please see `main/reader/reader.go` for a program that accepts anything on `stdin` and shows the bits on `stdout`. For every 0-bit it outputs a `0`, or for every 1-bit outputs a `1`. Example:
+
+```shell
+echo -n 'Hello' | go run main/reader/reader.go
+01001000 01100101 01101100 01101100 01101111
+```
+
+The reverse is `main/writer/writer.go`. This program accepts anything on `stdin`. Characters `0` are interpreted as 0-bits, `1`s are interpreted as 1-bits, and everything else is skipped. Example:
+
+```shell
+echo 01001000 01100101 01101100 01101100 01101111 | go run main/writer/writer.go
+Hello
+```
