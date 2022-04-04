@@ -6,7 +6,7 @@
 
 - Similarly, a `bitstream/bitwr` bit writer is instantiated with an underlying `io.Writer`. The writer collects bits that are sent to the bit writer using its method `Write()` into bytes, which then are sent to the underlying `io.Writer`.
 
-Basically, the bitstream reader takes a standard `io.Reader` but returns 8 bits for every byte that this reader would yield. The bitstream takes a standard `io.Writer`, accepts bits, and for every 8 bits it has received, it sends a byte to its `io.Writer`.
+Basically, the bitstream reader takes a standard `io.Reader` but returns 8 bits for every byte that this reader would yield. The bitstream writer takes a standard `io.Writer`, accepts bits, and for every 8 bits it has received, it sends a byte to its `io.Writer`.
 
 The bit reader and writer don't know about any other datatype than a byte. There is no concept of runes, characters, ints etc.. Just bits, and groups of eight of them are bytes.
 
@@ -38,7 +38,7 @@ func main() {
         }
     }
 
-    // bits will now be (shown in groups of 8):
+    // bits will now be (shown here in groups of 8 for readability):
     // 01001000 01100101 01101100 01101100 01101111 00100000 
     // 01010111 01101111 01110010 01101100 01100100
 
@@ -54,6 +54,9 @@ func main() {
             log.Fatalln(err)
         }
     }
+    // Flushing is only necessary if the # of sent bits isn't a multiple of 8.
+    // In this example it is redundant.
+    wr.Flush()
 
     // Here's the end result
     fmt.Println(stringWriter.String())
