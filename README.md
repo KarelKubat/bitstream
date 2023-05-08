@@ -1,5 +1,8 @@
 # bitstream
 
+<!-- toc -->
+<!-- /toc -->
+
 `bitstream` is a Go package to read or write bits. It has two sub-packages: `bitstream/bitrd` for reading, and `bitstream/bitwr` for writing.
 
 - A `bitstream/bitrd` bit reader is instantiated with an underlying `io.Reader` that is called to fetch bytes. The bit reader then yields the bits using its method `Read()`.
