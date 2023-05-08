@@ -1,6 +1,12 @@
 # bitstream
 
 <!-- toc -->
+- [Synopsis](#synopsis)
+- [API details](#api-details)
+  - [<code>bitstream</code> API](#bitstream-api)
+  - [<code>bitstream/bitrd</code> API](#bitstreambitrd-api)
+  - [<code>bitstream/bitwr</code>](#bitstreambitwr)
+- [Provided examples](#provided-examples)
 <!-- /toc -->
 
 `bitstream` is a Go package to read or write bits. It has two sub-packages: `bitstream/bitrd` for reading, and `bitstream/bitwr` for writing.
